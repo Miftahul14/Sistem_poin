@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12 text-center">
+                    <h1 class="m-0 text-dark">{{judul}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid col-sm-8">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>Tambah Kelas</strong></h4>
+                    <a href="{% url 'Kelas_Siswa_Ad' %}" class="btn btn-secondary btn-sm float-right">
+                        <i class="fas fa-arrow-left"></i>&ensp;Kembali
+                    </a>
+                </div>
+                <div class="card-body">
+
+                    <form action="{% url 'takel' %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label>Kelas</label>
+                            <select name="kelas" id="" class="form-control select-2" style="width: 100%;">
+                                <option value="" selected="selected">Pilih Kategori Kelas</option>
+                                <option value="VII">VII (7)</option>
+                                <option value="VIII">VIII (8)</option>
+                                <option value="IX">IX (9)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nama Kelas</label>
+                            <input name="nama_kelas" type="text" placeholder="Contoh Nama Kelas : (B)" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Wali Kelas</label>
+                            <select name="wali_kelas" class="form-control" required>
+                                <option value=""> -- Pilih Wali Kelas -- </option>
+                                {% for x in kelas %}
+                                <option value="{{x.id}}">{{x.nama_wali}} ({{x.nip}})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group text-right">
+                            <a href="" class="btn btn-danger btn-sm"><i class="fas fa-undo"></i>&ensp;Reset</a>
+                            <button type="submit" class="btn btn-primary btn-sm">Simpan &ensp; <i class="fas fa-arrow-right"></i></button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock content %}

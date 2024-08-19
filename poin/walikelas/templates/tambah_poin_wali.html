@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-12 text-center">
+                        <h1 class="m-0 text-dark">{{judul}}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid col-sm-8">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <h4 class="card-title" text-align="center"><strong>Tambah Poin Prestasi</strong></h4>
+                        <a href="{% url 'poin_prestasi' %}" class="btn btn-secondary btn-sm float-right">
+                            <i class="fas fa-arrow-left"></i>&ensp;Kembali
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'tambah_poin_prestasi' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group">
+                                    <label>Nama Siswa</label>
+                                    <select id="siswa" name="siswa" class="form-control select2" style="width: 100%;">
+                                        {% for siswa in siswa_list %}
+                                            <option value="{{siswa.nisn}}">{{siswa.nama_siswa}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label">Kategori Prestasi</label>
+                                    <select name="prestasi" class="form-control" style="width: 100%;" >
+                                        <option value="">Pilih Salah Satu</option>
+                                        {% for prestasi in prestasi  %}
+                                            <option value="{{prestasi.nama_prestasi}}">{{prestasi.nama_prestasi}} - {{prestasi.poin_prestasi}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="catatan" class="col-form-label">Catatan</label>
+                                    <textarea type="text" name="catatan" class="form-control" id="catatan" placeholder="Catatan"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group text-right">
+                                <a class="btn btn-danger btn-sm" href="#"><i class="fa fa-undo"></i>&ensp;Reset</a>
+                                <button type="submit" class="btn btn-primary btn-sm ">Submit &ensp;<i class="fas fa-arrow-right"></i></button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#kategori_kelas').change(function () {
+                var kelasID = $(this).val();
+                if (kelasID) {
+                    $.ajax({
+                        url: '{% url "ajax_load_nama_kelas" %}',
+                        data: {
+                            'kelas_id': kelasID
+                        },
+                        success: function (data) {
+                            $('#nama_kelas').html('<option value="" selected="selected">Pilih Nama Kelas</option>');
+                            $.each(data, function (key, value) {
+                                $('#nama_kelas').append('<option value="' + value.id + '">' + value.nama_kelas + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#nama_kelas').html('<option value="" selected="selected">Pilih Kategori Kelas dulu</option>');
+                }
+            });
+    
+            $('#nama_kelas').change(function () {
+                var namaKelasID = $(this).val();
+                if (namaKelasID) {
+                    $.ajax({
+                        url: '{% url "ajax_load_nama_siswa" %}',
+                        data: {
+                            'nama_kelas_id': namaKelasID
+                        },
+                        success: function (data) {
+                            $('#siswa').html('<option value="" selected="selected">Pilih Nama Siswa</option>');
+                            $.each(data, function (key, value) {
+                                $('#siswa').append('<option value="' + value.nisn + '">' + value.nama_siswa + ' (' + value.nisn + ') </option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#siswa').html('<option value="" selected="selected">Pilih Nama Kelas dulu</option>');
+                }
+            });
+        });
+    </script>
+    
+
+{% endblock content %}

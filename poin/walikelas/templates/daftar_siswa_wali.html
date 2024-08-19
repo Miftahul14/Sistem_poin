@@ -1,0 +1,56 @@
+{% extends 'base.html' %} 
+
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center">
+                        <strong>Daftar siswa</strong>
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col" style="width: 2%">No.</th>
+                                <th scope="col" style="width: 15%">NISN</th>
+                                <th scope="col" style="width: 40%">Nama Siswa</th>
+                                <th scope="col" style="width: 15%">Kelas</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for siswa in daftar_siswa %}
+                            <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td class="text-center">{{siswa.nisn}}</td>
+                                <td>{{siswa.nama_siswa}}</td>
+                                <td class="text-center">{{siswa.kelas.kelas}} - {{siswa.kelas.nama_kelas}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    .form-row {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-group {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .form-label {
+        margin-right: 10px;
+        flex: 0 0 150px;
+        font-weight: bold;
+    }
+    
+    .form-control {
+        flex: 1;
+    }
+    
+    .date-input {
+        width: 100%;
+    }
+    
+</style>
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Laporan</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>Laporan</strong></h4><br><br>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="siswa" class="form-label">Nama Siswa</label>
+                                {{ form.siswa }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tanggal_mulai" class="form-label">Dari Tanggal</label>
+                                {{ form.tanggal_mulai }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tanggal_selesai" class="form-label">Sampai Tanggal</label>
+                                {{ form.tanggal_selesai }}
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>                    
+                    
+                    {% if siswa %}
+                        <br>
+                        <br>
+                        <h2>Data Siswa</h2>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Nisn</th>
+                                <td>{{siswa.nisn}}</td>
+                            </tr>
+                            <tr>
+                                <th>Nama</th>
+                                <td>{{siswa.nama_siswa}}</td>
+                            </tr>
+                            <tr>
+                                <th>Kelas</th>
+                                <td>{{siswa.kelas}}</td>
+                            </tr>
+                            <tr>
+                                <th>Wali Kelas</th>
+                                <td>{{siswa.wali_kelas.nama_wali}}</td>
+                            </tr>
+                        </table>
+
+                        <h2>Pelanggaran</h2>
+                        <table class="table table-striped table-bordered">
+                            <thead class="theaad-dark">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Pelanggaran</th>
+                                    <th scope="col">Poin</th>
+                                    <th scope="col">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in mpelanggaran %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{item.pelanggaran.nama_pelanggaran}}</td>
+                                        <td>{{item.pelanggaran.poin_pelanggaran}}</td>
+                                        <td>{{item.waktu}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2"> Total Poin Pelanggaran :</th>
+                                    <td colspan="2"><strong>{{total_pelanggaran}}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                        <h2>Prestasi</h2>
+                        <table class="table table-striped table-bordered">
+                            <thead class="theaad-dark">
+                                <tr>
+                                    <th scope="col">No.</th>
+                                    <th scope="col">Prestasi</th>
+                                    <th scope="col">Poin</th>
+                                    <th scope="col">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in mprestasi %}
+                                    <tr>
+                                        <th scope="row">{{forloop.counter}}</th>
+                                        <td>{{item.prestasi.nama_prestasi}}</td>
+                                        <td>{{item.prestasi.poin_prestasi}}</td>
+                                        <td>{{item.waktu_prestasi}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2"> Total Poin Prestasi :</th>
+                                    <td colspan="2"><strong>{{total_prestasi}}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <form method="post" action="{% url 'printpoin' siswa.id %}" target="_blank">
+                            {% csrf_token %}
+                            <input type="hidden" name="tanggal_mulai" value="{{ form.tanggal_mulai.value }}">
+                            <input type="hidden" name="tanggal_selesai" value="{{ form.tanggal_selesai.value }}">
+                            <button type="submit" class="btn btn-primary float-right">
+                                <i class="fas fa-print"></i> Print
+                            </button>
+                        </form>
+                        
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('select').select2(); 
+    });
+</script>
+
+{% endblock content %}

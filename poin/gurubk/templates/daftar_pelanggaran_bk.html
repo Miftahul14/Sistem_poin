@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12 text-center">
+                    <h1 class="m-0 text-dark">{{judul}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- pesan alert -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" data-message="{{ message }}" style="display:none;"></div>
+        {% endfor %}
+    {% endif %}
+    <!-- /pesan alert -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>{{judul}}</strong></h4>    
+                </div>
+                
+                <div class="card-body">
+
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 2%;" class="text-center">No.</th>
+                                <th scope="col" style="width: 55%;" class="text-center">Nama Pelanggaran</th>
+                                <th scope="col" style="width: 10%;" class="text-center">Poin</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            
+                            {% for x in dapel %}
+                            <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td>{{x.nama_pelanggaran}}</td>
+                                <td class="text-center">{{x.poin_pelanggaran}}</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+
+{% endblock content %}

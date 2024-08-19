@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="#" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#tambah_daftar_prestasi">
+                        <i class="fas fa-plus"></i>
+                        &ensp;Tambah Prestasi
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alert -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" data-message="{{ message }}" style="display:none;"></div>
+        {% endfor %}
+    {% endif %}
+    <!-- /alert -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>{{judul}}</strong></h4>
+                    
+                    <!-- modal tambah -->
+                    <div class="modal fade" id="tambah_daftar_prestasi">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary">
+                                    <h5 class="modal-title">Tambah Daftar Prestasi</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form action="{% url 'tambah_daftar_pre' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+            
+                                        <div class="form-group">
+                                            <label>Nama Prestasi</label>
+                                            <input type="text" name="napre" class="form-control" placeholder="Nama Prestasi">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Jumlah Poin</label>
+                                            <input type="number" name="jumpre" class="form-control" placeholder="Jumlah Poin">
+                                        </div>
+            
+                                    </div>
+            
+                                    <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+                                            <i class="fas fa-times"></i>
+                                            &ensp;Tutup
+                                        </button>
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus"></i>
+                                            &ensp;Tambah
+                                        </button>
+                                    </div> 
+            
+                                </form>
+            
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /modal tambah -->
+
+                </div>
+                <div class="card-body">
+                
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px;">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col" style="width: 2%;">No.</th>
+                                <th scope="col" style="width: 55%;">Nama Prestasi</th>
+                                <th scope="col" style="width: 10%;">Poin</th>
+                                <th scope="col" style="width: 15%;">Status</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+
+                            {% for x in pres %}
+                            <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td>{{x.nama_prestasi}}</td>
+                                <td class="text-center">{{x.poin_prestasi}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-warning" style="font-size: 12px;" data-toggle="modal" data-target="#edit_daftar_prestasi{{x.id}}">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <a href="/administrator/hapus_prestasi/{{ x.id }}/" style="font-size: 12px;" class="btn btn-sm btn-danger" onclick="confirmDelete(event, '{{ x.id }}');">
+                                        <i class="fas fa-trash" style="font-size: 12px;"></i>
+                                        Hapus
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <!-- edit -->
+                            <div class="modal fade" id="edit_daftar_prestasi{{x.id}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-warning">
+                                            <h5 class="modal-title">Edit Prestasi</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{% url 'edit_prestasi' x.id %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                <input type="hidden" name="z" readonly value="1" class="form-control">
+                                                
+                                                <div class="form-group">
+                                                    <label>Nama Prestasi</label>
+                                                    <input type="text" name="napre" class="form-control" value="{{x.nama_prestasi}}">
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label>Jumlah Poin</label>
+                                                    <input type="number" name="jumpre" class="form-control" value="{{x.poin_prestasi}}">
+                                                </div>
+    
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-secondary btn-sm">
+                                                    <i class="fas fa-times"></i>
+                                                    &ensp;Tutup
+                                                </button>
+                                                <button type="submit" class="btn btn-warning btn-sm">
+                                                    <i class="fas fa-edit"></i>
+                                                    &ensp;Simpan
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /edit -->
+
+                            {% endfor %}
+                            
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+    function confirmDelete(event, id) {
+        event.preventDefault();
+    
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat memulihkan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/administrator/hapus_prestasi/' + id + '/';
+            }
+        })
+    }
+</script>
+
+{% endblock content %}

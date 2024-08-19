@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMP Islam Paiton</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}"/>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+        img.hidden {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-4">
+            <img src="{% static 'assets/dist/img/logo.jpg' %}" class="float-left" height="100" width="100" alt="Logo"/>
+            <h2 class="font-weight-bold">
+                YAYASAN NAHDLATUL ULAMA
+            </h2>
+            <h4 class="font-weight-bold">
+                SEKOLAH MENENGAH PERTAMA PAITON
+            </h4>
+            <h5 class="font-weight-bold">
+                SMP ISLAM PAITON
+            </h5>
+            <p class="font-size-lg">
+                Alamat: Jl. Kotaanyar, Dusun Sefar, Sukorejo, Kec. Kotaanyar, Kabupaten Probolinggo, Jawa Timur 67293
+            </p>
+            <p class="font-size-md">
+                Email: smpislampaiton@gmail.com HP: 0823-3190-0219
+            </p>
+        </div>
+
+        <hr class="my-4"/>
+
+        <div class="text-center mb-4">
+            <h3 class="font-weight-bold">SURAT PERNYATAAN</h3>
+        </div>
+
+        <p class="font-size-lg mb-4">
+            Yang bersangkutan dibawah ini:
+        </p>
+
+        <table class="table table-borderless">
+            <tbody>
+                <tr>
+                    <th style="width: 170px;">Nomor Induk Siswa</th>
+                    <td> : {{siswa.nisn}}</td>
+                </tr>
+                <tr>
+                    <th>Nama Siswa</th>
+                    <td> : {{siswa.nama_siswa}}</td>
+                </tr>
+                <tr>
+                    <th>Kelas</th>
+                    <td> : {{siswa.kelas.kelas}} {{siswa.kelas.nama_kelas}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>Setelah membaca dengan cermat tentang tata tertib yang berlaku di SMP Islam Paiton dengan ini menyatakan :</p>
+        
+        <ol>
+            <li>Saya memahami serta menerima sepenuhnya ketentuan tata tertib yang berlaku di SMP Islam Paiton</li>
+            <li>Saya menaati dan melaksanakan tata tertib yang berlaku di SMP Islam Paiton dengan sebaik-baiknya dan penuh tanggung jawab</li>
+            <li>Saya bersedia menerima dan melaksanakan sanksi-sanksi yang berlaku di SMP Islam Paiton, bila saya melakukan pelanggaran tata tertib sekolah</li>
+            <li>Saya berjaji untuk menghormati dan menjunjung tinggi peraturan dan tata tertib yang berlaku di SMP Islam Paiton dan tidak akan mengulangi kesalahan berupa <strong>{{mpelanggaran.pelanggaran.nama_pelanggaran}}</strong> demi untuk menjaga kehormatan, nama baik sekolah dan untuk kepentingan diri sendiri sebagai siswa, dimana saya menuntut ilmu</li>
+            <li>Saya akan menghormati semua saran, teguran, maupun peringatan terhadap diri saya, baik yang berasal dari guru, karyawan dari pihak sekolah, baik lisan maupun tertulis </li>
+        </ol>
+
+        <div class="text-justify mb-4">
+            <p class="font-size-lg">
+                Demikian pernyataan saya ini buat dengan sebenar-benarnya. Semoga dapat dipergunakan sebagai mestinya. Terimakasih.
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    Wali Kelas
+                </p>
+            </div>
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    Paiton, {% now "j F Y" %}<br>
+                    Yang Memuat
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    {{siswa.wali_kelas.nama_wali}}
+                </p>
+            </div>
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    Akhmad Jaelani, S.Pd
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        window.addEventListener("load", function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>

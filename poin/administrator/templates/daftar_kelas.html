@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="{% url 'tambah_kelas' %}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i>
+                        &ensp;Tambah Kelas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" data-message="{{ message }}" style="display:none;"></div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>{{judul}}</strong></h4>                    
+                </div>
+
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="width: 2%;">No</th>
+                                <th scope="col" style="width: 5%;" class="text-center">Kelas</th>
+                                <th scope="col" style="width: 15%;">Nama Kelas</th>
+                                <th scope="col" style="width: 20%;">Wali Kelas</th>
+                                <th scope="col" style="width: 15%;">Total Murid</th>
+                                <th scope="col" style="width: 30%;">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for x in dakel %}
+                            <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td class="text-center">{{x.kelas}}</td>
+                                <td class="text-center">{{x.nama_kelas}}</td>
+                                <td>{{x.wali_kelas.nama_wali}}</td>
+                                <td class="text-center">{{x.jumlah_murid}}</td>
+                                <td>
+
+                                    <a class="btn btn-sm btn-info" href="{% url 'detail_siswa_kelas' x.id %}" title="Detail">
+                                        <i class="fas fa-info-circle"></i>
+                                        Detail
+                                    </a>
+
+                                    <a class="btn btn-sm btn-warning" href="#" title="Edit" data-toggle="modal" data-target="#edit_kelas{{x.id}}">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+
+                                    <a href="{% url 'hapus_kelas' x.id %}" class="btn btn-sm btn-danger" style="font-size: 12px;" onclick="confirmDelete(event, '{{ x.id }}');">
+                                        <i class="fas fa-trash"></i>
+                                        Hapus
+                                    </a>
+
+                                </td>
+                            </tr>
+
+                            <!-- edit -->
+                            <div class="modal fade" id="edit_kelas{{x.id}}">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-warning">
+                                            <h5 class="modal-title">Edit Kelas</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        
+                                        <form action="{% url 'edit_kelas' x.id %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Kelas</label>
+                                                    <select name="kelas" class="form-control select2" style="width: 100%;">
+                                                        <option value="VII" {% if x.kelas == 'VII' %}selected{% endif %}>7</option>
+                                                        <option value="VIII" {% if x.kelas == 'VIII' %}selected{% endif %}>8</option>
+                                                        <option value="IX" {% if x.kelas == 'IX' %}selected{% endif %}>9</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Nama Kelas</label>
+                                                    <input type="text" name="nama_kelas" class="form-control" value="{{x.nama_kelas}}">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Wali Kelas</label>
+                                                    <select name="wali_kelas" class="form-control" required>
+                                                        <option value=""> -- Pilih Wali Kelas -- </option>
+                                                        {% for r in kelas %}
+                                                        <option value="{{r.id}}" {% if r.id == dakel.wali_kelas.id %}
+                                                        selected
+                                                        {% endif %}>{{r.nama_wali}} ({{r.nip}})</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /edit -->
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    function confirmDelete(event, id) {
+        event.preventDefault();
+    
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat memulihkan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/administrator/hapus_kelas/' + id + '/';
+            }
+        })
+    }
+</script>
+
+{% endblock content %}

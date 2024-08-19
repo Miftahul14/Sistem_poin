@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <a href="{% url 'tambah_siswa' %}" id="tambahsiswa" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i>
+                        &ensp;Tambah Siswa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alert -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <div class="alert alert-success" data-message="{{ message }}" style="display:none;"></div>
+            {% elif message.tags == 'error' %}
+                <div class="alert alert-danger" data-message="{{ message }}" style="display:none;"></div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <!-- /alert -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center">
+                        <strong>{{judul}}</strong>
+                    </h4>    
+                </div>
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">No.</th>
+                                <th scope="col" style="width: 15%">NISN</th>
+                                <th scope="col" style="width: 25%">Nama Siswa</th>
+                                <th scope="col" style="width: 25%">Wali Kelas</th>
+                                <th scope="col" style="width: 10%">Kelas</th>
+                                <th scope="col" style="width: 25%">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                                {% for x in siswa %}    
+                                <tr>
+                                    <td class="text-center">{{forloop.counter}}</td>
+                                    <td class="text-center">{{x.nisn}}</td>
+                                    <td>{{x.nama_siswa}}</td>
+                                    <td>{{x.wali_kelas.nama_wali}}</td>
+                                    <td class="text-center">{{x.kelas.kelas}} {{x.kelas.nama_kelas}}</td>
+                                    <td>    
+                                        <a href="{% url 'detail_siswa_ad' x.id %}" class="btn btn-sm btn-info" style="font-size: 12px;">
+                                            <i class="fas fa-info"></i>
+                                            Detail
+                                        </a>
+                        
+                                        <a href="#" class="btn btn-sm btn-warning" style="font-size: 12px;" data-toggle="modal" data-target="#edit_siswa{{x.id}}">
+                                            <i class="fas fa-edit" style="font-size: 12px;"></i>
+                                            Edit
+                                        </a>
+                        
+                                        <a href="{% url 'hapus_siswa' x.id %}" class="btn btn-sm btn-danger" style="font-size: 12px;" onclick="confirmDelete(event, '{{ x.id }}');">
+                                            <i class="fas fa-trash" style="font-size: 12px;"></i>
+                                            Hapus
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <!-- edit -->
+                                <div class="modal fade" id="edit_siswa{{x.id}}">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header bg-warning">
+                                                <h5 class="modal-title">Edit Siswa</h5>
+                    
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+    
+                                            </div>
+    
+                                            <form action="{% url 'edit_siswa' x.id %}" method="post">
+                                                {% csrf_token %}
+                                                <div class="modal-body">
+    
+                                                    <div class="form-group">
+                                                        <label>NISN</label>
+                                                        <input type="text" name="nisn" class="form-control" value="{{x.nisn}}" required/>
+                                                    </div>
+    
+                                                    <div class="form-group">
+                                                        <label>Nama Siswa</label>
+                                                        <input type="text" name="nama_siswa" class="form-control" value="{{x.nama_siswa}}" required/>
+                                                    </div>
+    
+                                                </div>
+    
+                                                <div class="modal-footer justify-content-between">
+    
+                                                    <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-secondary btn-sm">
+                                                        <i class="fas fa-times"></i>
+                                                        &ensp;Tutup
+                                                    </button>
+    
+                                                    <button type="submit" class="btn btn-warning btn-sm">
+                                                        <a href="#"></a>
+                                                        <i class="fas fa-edit"></i>
+                                                        &ensp;Simpan
+                                                    </button>
+    
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /edit -->
+                                
+                                {% endfor %}
+                    
+                        </tbody>
+    
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+    </section>
+
+</div>
+
+<script>
+    function confirmDelete(event, id) {
+        event.preventDefault();
+    
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat memulihkan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/administrator/hapus_siswa/' + id + '/';
+            }
+        })
+    }
+</script>
+
+{% endblock content %}

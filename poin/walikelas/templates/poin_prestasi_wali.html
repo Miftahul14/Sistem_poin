@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <a href="{% url 'tambah_poin_prestasi' %}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i>
+                        &ensp;Tambah Poin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- alert -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" data-message="{{ message }}" style="display:none;"></div>
+        {% endfor %}
+    {% endif %}
+    <!-- alert -->
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>{{judul}}</strong></h4>
+                </div>
+
+                <div class="card-body">
+
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center">No.</th>
+                                <th scope="col" style="width: 20%;" class="text-center">Nisn</th>
+                                <th scope="col" style="width: 20%;" class="text-center">Nama</th>
+                                <th scope="col" style="width: 25%;" class="text-center">Prestasi</th>
+                                <th scope="col" style="width: 10%;" class="text-center">Poin</th>
+                                <th scope="col" style="width: 25%;" class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                        
+                            {% for x in mprestasi %}
+                            <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td>{{x.siswa.nisn}}</td>
+                                <td>{{x.siswa.nama_siswa}}</td>
+                                <td>{{x.prestasi.nama_prestasi}}</td>
+                                <td class="text-center">{{x.prestasi.poin_prestasi}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-info" style="font-size: 12px;"
+                                    data-toggle="modal" 
+                                    data-target="#detail_bk{{x.id}}">
+                                        <i class="fas fa-info"></i>
+                                        Detail
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-warning" style="font-size: 12px;" data-toggle="modal" 
+                                    data-target="#edit_bk{{x.id}}">
+                                        <i class="fas fa-edit" style="font-size: 12px;"></i>
+                                        Edit
+                                    </a>
+                                    <a href="/walikelas/hapus-poin-prestasi/{{ x.id }}" style="font-size: 12px;" class="btn btn-sm btn-danger" onclick="confirmDelete(event, '{{ x.id }}');">
+                                        <i class="fas fa-trash" style="font-size: 12px;"></i>
+                                        Hapus
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <!-- edit -->
+                            <div class="modal fade" id="edit_bk{{x.id}}" tabindex="-1" role="dialog" aria-labelledby="edit_bk{{x.id}}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-info">
+                                            <h5 class="modal-title">Edit Poin Siswa</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form action="{% url 'edit_poin_prestasi' x.id %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="modal-body">
+                                                
+                                                <!-- Dropdown for Prestasi -->
+                                                <div class="form-group">
+                                                    <label for="prestasi" class="col-form-label">Kategori Prestasi</label>
+                                                    <select name="prestasi" class="form-control" style="width: 100%;">
+                                                        <option value="">Pilih Salah Satu</option>
+                                                        {% for dapres in prestasi %}
+                                                            <option value="{{ dapres.id }}" {% if dapres.id == x.prestasi.id %}selected{% endif %}>
+                                                                {{ dapres.nama_prestasi }} - {{ dapres.poin_prestasi }}
+                                                            </option>
+                                                        {% empty %}
+                                                            <option value="">Tidak ada data prestasi</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                            
+                                                <!-- Textarea for Catatan -->
+                                                <div class="form-group">
+                                                    <label for="catatan" class="col-form-label">Catatan</label>
+                                                    <textarea name="catatan" class="form-control">{{ x.catatan_prestasi }}</textarea>
+                                                </div>  
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+                                                    <i class="fas fa-times"></i> &ensp;Tutup
+                                                </button>
+                                                <button type="submit" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-arrow-right mr-2"></i>Simpan
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /edit -->
+
+                            <!-- detail -->
+                            <div class="modal fade" id="detail_bk{{x.id}}">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-info">
+                                            <h5 class="modal-title">Detail Poin Siswa</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form>
+                                            <div class="modal-body">
+    
+                                                <div class="form-group">
+                                                    <label>Nisn</label>
+                                                    <input type="text" readonly class="form-control" value="{{x.siswa.nisn}}">
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label>Nama</label>
+                                                    <input type="text" readonly class="form-control" value="{{x.siswa.nama_siswa}}">
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label>Prestasi</label>
+                                                    <input type="text" readonly class="form-control" value="{{x.prestasi.nama_prestasi}}">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Poin</label>
+                                                    <input type="text" readonly class="form-control" value="{{x.prestasi.poin_prestasi}}">
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label class="col-form-label">Catatan</label>
+                                                    <textarea name="catatan" disabled type="text" class="form-control">{{x.catatan_prestasi}}</textarea>
+                                                </div>
+    
+                                                <div class="form-group">
+                                                    <label>Waktu</label>
+                                                    <input type="text" readonly class="form-control" value="{{x.waktu_prestasi}}">
+                                                </div>
+    
+                                            </div>
+    
+                                            <div class="modal-footer" style="clear:both">
+                                                <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-secondary btn-sm">
+                                                    <i class="fas fa-times"></i>
+                                                    &ensp;Tutup
+                                                </button>
+                                            </div>
+    
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /detail -->
+
+                            {% endfor %}
+                            
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+    function confirmDelete(event, id) {
+        event.preventDefault();
+    
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Anda tidak akan dapat memulihkan data ini!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/walikelas/hapus-poin-prestasi/' + id + '/';
+            }
+        })
+    }
+    </script>
+
+{% endblock content %}

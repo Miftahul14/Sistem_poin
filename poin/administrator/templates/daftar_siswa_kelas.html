@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <br>
+                    <a href="{% url 'Kelas_Siswa_Ad' %}" class="btn btn-primary">Kembali</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success" data-message="{{ message }}" style="display:none;"></div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header d-flex align-items-center">
+                    <h4 class="card-title mb-0"><strong>Siswa Kelas - ({{ kelas.kelas }} - {{ kelas.nama_kelas }})</strong></h4>
+                </div>
+
+                <div class="card-body">
+                    <form action="{% url 'promote_class' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="kelas_id" value="{{ kelas.id }}">
+                        <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="width: 2%;">No</th>
+                                    <th scope="col">NISN</th>
+                                    <th scope="col">Nama Siswa</th>
+                                    <th scope="col" style="width: 25%;">
+                                        &ensp; Pilih semua
+                                        <span style="margin-left: 10px;">
+                                            <input type="checkbox" id="select_all" name="select_all" value="true" onchange="toggle(this)">
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for siswa in siswa_list %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td>{{ siswa.nisn }}</td>
+                                    <td>{{ siswa.nama_siswa }}</td>
+                                    <td>
+                                        <input type="checkbox" name="select_siswa" value="{{ siswa.id }}">
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">Tidak ada siswa di kelas ini</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <br>
+                        <br>
+                        <br>
+                        <div class="form-group mt-3">
+                            <label for="kelas_baru_id">Pilih Kelas Baru:</label>
+                            <select name="kelas_baru_id" id="kelas_baru_id" class="form-control" required>
+                                {% for kelas in kelas_list %}
+                                <option value="{{ kelas.id }}">{{ kelas.kelas }} {{ kelas.nama_kelas }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Naik Kelas</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function toggle(source) {
+        checkboxes = document.querySelectorAll('input[name="select_siswa"]');
+        checkboxes.forEach(checkbox => checkbox.checked = source.checked);
+    }
+</script>
+
+{% endblock content %}

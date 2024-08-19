@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SMP Islam Paiton</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"/>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome-free/css/all.min.css' %}"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'assets/dist/css/adminlte.min.css' %}"/>
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-right: 30px;
+            margin-left: 30px;
+        }
+        img.hidden {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center mb-4">
+            <img src="{% static 'assets/dist/img/logo.jpg' %}" class="float-left" height="100" width="100" alt="Logo"/>
+            <h2 class="font-weight-bold">
+                YAYASAN NAHDLATUL ULAMA
+            </h2>
+            <h4 class="font-weight-bold">
+                SEKOLAH MENENGAH PERTAMA PAITON
+            </h4>
+            <h5 class="font-weight-bold">
+                SMP ISLAM PAITON
+            </h5>
+            <p class="font-size-lg">
+                Alamat: Jl. Kotaanyar, Dusun Sefar, Sukorejo, Kec. Kotaanyar, Kabupaten Probolinggo, Jawa Timur 67293
+            </p>
+            <p class="font-size-md">
+                Email: smpislampaiton@gmail.com HP: 0823-3190-0219
+            </p>
+        </div>
+
+        <hr class="my-4"/>
+
+        <div class="text-center mb-4">
+            <h3 class="font-weight-bold">SURAT PERNYATAAN</h3>
+        </div>
+
+        <p class="font-size-lg mb-4">
+            Yang bersangkutan dibawah ini:
+        </p>
+
+        <table class="table table-borderless">
+            <tbody>
+                <tr>
+                    <th style="width: 170px;">Nomor Induk Siswa</th>
+                    <td> : {{siswa.nisn}}</td>
+                </tr>
+                <tr>
+                    <th>Nama Siswa</th>
+                    <td> : {{siswa.nama_siswa}}</td>
+                </tr>
+                <tr>
+                    <th>Kelas</th>
+                    <td> : {{siswa.kelas}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="font-weight-bold mb-3">Daftar Pelanggaran</h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Kategori Pelanggaran</th>
+                        <th>Poin</th>
+                        <th>Catatan</th>
+                        <th>Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pelanggaran in mpelanggaran %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{pelanggaran.pelanggaran.nama_pelanggaran}}</td>
+                        <td>{{pelanggaran.pelanggaran.poin_pelanggaran}}</td>
+                        <td>{{pelanggaran.catatan_pelanggaran}}</td>
+                        <td>{{pelanggaran.waktu}}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Tidak ada data pelanggaran</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2"> Total Poin Pelanggaran :</th>
+                        <td colspan="2"><strong>{{total_pelanggaran}}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <h4 class="font-weight-bold mb-3">Daftar Prestasi</h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Kategori Prestasi</th>
+                        <th>Poin</th>
+                        <th>Catatan</th>
+                        <th>Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in mprestasi %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{item.prestasi.nama_prestasi}}</td>
+                        <td>{{item.prestasi.poin_prestasi}}</td>
+                        <td>{{item.catatan_prestasi}}</td>
+                        <td>{{item.waktu_prestasi}}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5">Tidak ada data prestasi</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2"> Total Poin Prestasi :</th>
+                        <td colspan="2"><strong>{{total_prestasi}}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="text-justify mb-4">
+            <p class="font-size-lg">
+                Demikian pernyataan saya ini buat dengan sebenar-benarnya. Semoga dapat dipergunakan sebagai mestinya. Terimakasih.
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    Wali Kelas
+                </p>
+            </div>
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    Paiton, {% now "j F Y" %}<br>
+                    Yang Memuat
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    {{siswa.wali_kelas.nama_wali}}
+                </p>
+            </div>
+            <div class="col text-center mb-4">
+                <p class="font-size-lg">
+                    Akhmad Jaelani, S.Pd
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        window.addEventListener("load", function() {
+            window.print();
+        });
+    </script>
+</body>
+</html>

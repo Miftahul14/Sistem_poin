@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{judul}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-outline card-info">
+                <div class="card-header">
+                    <h4 class="card-title" text-align="center"><strong>{{judul}}</strong></h4>
+                </div>
+
+                <div class="card-body">
+
+                    <table id="example2" class="table table-bordered table-hover" style="width: 100%; margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center">No.</th>
+                                <th scope="col" style="width: 30%;" class="text-center">Nisn</th>
+                                <th scope="col" style="width: 30%;" class="text-center">Nama</th>
+                                <th scope="col" style="width: 25%;" class="text-center">Prestasi</th>
+                                <th scope="col" style="width: 10%;" class="text-center">Poin</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                        
+                            {% for x in mprestasi %}
+                            <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td>{{x.siswa.nisn}}</td>
+                                <td>{{x.siswa.nama_siswa}}</td>
+                                <td>{{x.prestasi.nama_prestasi}}</td>
+                                <td class="text-center">{{x.prestasi.poin_prestasi}}</td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>{{judul}}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <a href="{% url 'Daftar_Siswa_Ad' %}" class="btn btn-primary">Kembali</a>
+
+                    <div class="invoice p-3 mb-3 mt-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-6 invoice-col">
+                                        <address>
+                                            <strong>Nomor Induk Siswa</strong><br>
+                                            Nama Lengkap Siswa<br>
+                                            Kelas Siswa<br>
+                                            Wali Kelas<br>
+                                        </address>
+                                    </div>
+                                    <div class="col-sm-6 invoice-col">
+                                        <address>
+                                            <strong>: {{siswa.nisn}}</strong><br>
+                                            : {{siswa.nama_siswa}}<br>
+                                            : {{siswa.kelas}}<br>
+                                            : {{siswa.wali_kelas.nama_wali}}<br>
+                                        </address>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5><b>Daftar Pelanggaran</b></h5>
+                        <div class="row">
+                            <div class="col-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Kategori Pelanggaran</th>
+                                            <th>Poin</th>
+                                            <th>Catatan</th>
+                                            <th>Waktu</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for x in mpelanggaran %}
+                                        <tr>
+                                            <td>{{forloop.counter}}.</td>
+                                            <td>{{x.pelanggaran.nama_pelanggaran}}</td>
+                                            <td>{{x.pelanggaran.poin_pelanggaran}}</td>
+                                            <td>{{x.catatan_pelanggaran}}</td>
+                                            <td>{{x.waktu}}</td>
+                                            <td>
+                                                <a class="btn btn-primary float-right" href="{% url 'print_pelanggaran' x.id %}" rel="noopener" target="_blank">
+                                                    <i class="fas fa-print"></i>
+                                                    Print
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <h5><b>Daftar Prestasi</b></h5>
+                        <div class="row">
+                            <div class="col-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Kategori Prestasi</th>
+                                            <th>Poin</th>
+                                            <th>Catatan</th>
+                                            <th>Waktu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for x in mprestasi %}
+                                        <tr>
+                                            <td>{{forloop.counter}}.</td>
+                                            <td>{{x.prestasi.nama_prestasi}}</td>
+                                            <td>{{x.prestasi.poin_prestasi}}</td>
+                                            <td>{{x.catatan_prestasi}}</td>
+                                            <td>{{x.waktu_prestasi}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock content %}

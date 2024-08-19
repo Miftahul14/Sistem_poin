@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{judul}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Daftar Siswa dan Daftar Prestasi -->
+                <div class="col-lg-6 col-md-12">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3>{{jumlah_siswa}}</h3>
+                                    <p>Daftar Siswa</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <a href="{% url 'daftar_siswa_wali_kelas' %}" class="small-box-footer">Selengkapnya 
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="small-box bg-secondary">
+                                <div class="inner">
+                                    <h3>{{jumlah_prestasi}}</h3>
+                                    <p>Daftar Prestasi</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <a href="{% url 'daftar_prestasi_wali' %}" class="small-box-footer">Selengkapnya 
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Top Prestasi -->
+                <div class="col-lg-6 col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="far fa-list-alt"></i>
+                                Top Prestasi
+                            </h5>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped display-nowrap" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 4%;" class="text-center">No.</th>
+                                        <th scope="col" style="width: 55%;">Nama Prestasi</th>
+                                        <th scope="col" style="width: 15%;" class="text-center">Total Prestasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for prestasi in top_prestasi %}
+                                    <tr>
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td>{{prestasi.prestasi__nama_prestasi}}</td>
+                                        <td class="text-center">{{prestasi.total}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock content %}

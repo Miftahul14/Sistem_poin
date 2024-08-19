@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">{{judul}}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{jumlah_siswa}}</h3>
+                            <p>Daftar Siswa</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <a href="{% url 'Daftar_Siswa_Ad' %}" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3>{{jumlah_kelas}}</h3>
+                            <p>Daftar Kelas</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <a href="{% url 'Kelas_Siswa_Ad' %}" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-success">
+                        <div class="inner">
+                            <h3>{{jumlah_wali}}</h3>
+                            <p>Daftar Wali Kelas</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <a href="{% url 'Daftar_Wali_Ad' %}" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6 ">
+                    <div class="small-box bg-secondary ">
+                        <div class="inner">
+                            <h3>{{jumlah_prestasi}}</h3>
+                            <p>Daftar Prestasi</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <a href="{% url 'daftar_prestasi_ad' %}" class="small-box-footer">Selengkapnya <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row"> 
+                <section class="col-lg-6 connectedSortable">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="far fa-list-alt"></i>
+                                Top Pelangggaran
+                            </h5>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped display nowrap" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 1%;" class="text-center">No.</th>
+                                        <th scope="col" style="width: 16%;" class="text-center">Nama Pelanggaran</th>
+                                        <th scope="col" class="text-center" style="width: 5%;">Total Pelanggaran</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for pelanggaran in top_pelanggaran %}
+                                    <tr>
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td>{{pelanggaran.pelanggaran__nama_pelanggaran}}</td>
+                                        <td class="text-center">{{pelanggaran.total}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="col-lg-6 connectedSortable">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-list-alt"></i>
+                                Top Prestasi
+                            </h3>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-bordered table-striped display nowrap" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 1%;" class="text-center">No.</th>
+                                        <th scope="col" style="width: 16%;" class="text-center">Nama Prestasi</th>
+                                        <th scope="col" class="text-center" style="width: 5%;">Total Prestasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for prestasi in top_prestasi %}
+                                    <tr>
+                                        <td class="text-center">{{forloop.counter}}</td>
+                                        <td>{{prestasi.prestasi__nama_prestasi}}</td>
+                                        <td class="text-center">{{prestasi.total}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+    
+        </div>
+    </section>
+</div>
+
+{% endblock content %}
+
+
